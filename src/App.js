@@ -6,6 +6,8 @@ import { useState } from "react";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
+  const [viewResult, setViewResult] = useState(false);
+  const [prediciton, setPrediction] = useState("");
 
   const getPrediction = async () => {
     setIsLoading(true);
@@ -14,24 +16,29 @@ function App() {
       method: "GET",
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
       .catch((error) => console.error(error));
-    console.log(res);
+
     setIsLoading(false);
+
+    console.log(res);
+    if (res) {
+      setViewResult(true);
+      setPrediction(res.body);
+    }
   };
 
   return (
     <div className="h-screen mx-auto">
       <Header />
 
-      <main className="flex flex-col items-center">
+      <main className="h-4/6 flex flex-col items-center justify-center ">
         {isLoading && (
           <div className="mt-60">
             <Spinner size="xl" thickness="4px" />
           </div>
         )}
 
-        {!isLoading && (
+        {!isLoading && !viewResult && (
           <>
             <div className="w-full">
               <InputFields />
@@ -42,6 +49,13 @@ function App() {
               </Button>
             </div>
           </>
+        )}
+
+        {!isLoading && viewResult && (
+          <div className="flex flex-col items-center">
+            <h1 className="text-3xl font-semibold text-black">Prediction:</h1>
+            <p>{prediciton}</p>
+          </div>
         )}
       </main>
     </div>
