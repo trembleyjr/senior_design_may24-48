@@ -1,0 +1,22 @@
+This is a basic file we can use to output the results of our tests as we modify the model.
+
+Goals (for this branch at least): Get as high AUC, Precision, and Recall as possible
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(128, activation='relu')(inputs)
+x = Dense(1024, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  89.76372838020325
+Mean precision:  44.914261028170586
+Mean recall:  18.77666436135769
+
+Conclusion, attempt to focus towards raising precision and recall
