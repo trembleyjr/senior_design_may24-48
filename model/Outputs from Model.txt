@@ -174,3 +174,24 @@ Mean recall:  13.413797914981842
 
 Conclusion, reduction affects AUC, but impact on other evaluators is minimal
 
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(128, activation='relu')(inputs)
+x = Dense(1024, activation='relu')(x)
+x = Dense(4096, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss=keras.losses.BinaryCrossentropy(reduction='none'), optimizer='sgd')
+
+Manually set threshold to 0.4
+
+Model outputs:
+
+Mean area under curve:  0.34773898
+Mean precision:  0.67009723
+Mean recall:  0.15775342
+
+Conclusion, threshold lowers AUC and Precision, but does not have significant enough effect on recall
