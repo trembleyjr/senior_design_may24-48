@@ -31,7 +31,7 @@ function App() {
     <div className="h-screen mx-auto">
       <Header />
 
-      <main className="h-4/6 flex flex-col items-center justify-center ">
+      <main className="min-h-fit flex flex-col items-center justify-center ">
         {isLoading && (
           <div className="mt-60">
             <Spinner size="xl" thickness="4px" />
