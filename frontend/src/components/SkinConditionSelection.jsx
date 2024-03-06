@@ -69,7 +69,6 @@ function SkinConditionSelection() {
         .replaceAll("3b", ":")
         .replaceAll("28", "")
         .replaceAll("29", "")
-
         .replace(/\s+$/, "");
 
       // Upper Case the first letter of each word
