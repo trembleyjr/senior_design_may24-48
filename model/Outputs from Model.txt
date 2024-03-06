@@ -1,0 +1,197 @@
+This is a basic file we can use to output the results of our tests as we modify the model.
+
+Goals (for this branch at least): Get as high AUC, Precision, and Recall as possible
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(128, activation='relu')(inputs)
+x = Dense(1024, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  89.76372838020325
+Mean precision:  44.914261028170586
+Mean recall:  18.77666436135769
+
+Conclusion, attempt to focus towards raising precision and recall
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(128, activation='relu')(inputs)
+x = Dense(1024, activation='relu')(x)
+x = Dense(2048, activation='relu')(x)
+x = Dense(4096, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  90.53285896778107
+Mean precision:  34.698971286416054
+Mean recall:  21.415214091539383
+
+Conclusion, more layers not necessarily better. Results for this calculation took much longer, did not effect AUC, reduced precision and slightly increased recall
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(128, activation='relu')(inputs)
+x = Dense(4096, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  90.88915467262268
+Mean precision:  90.68334341049194
+Mean recall:  14.268363118171692
+
+Conclusion, says high precision, but direct outputs show that the results barely include other numbers
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(64, activation='relu')(inputs)
+x = Dense(512, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  90.68036794662476
+Mean precision:  80.66275000572205
+Mean recall:  13.508799970149994
+
+Conclusion, model is still overcommitting to just saying no allergies
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(128, activation='relu')(inputs)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  77.13840126991272
+Mean precision:  49.387765526771545
+Mean recall:  14.162589311599731
+
+Conclusion, at the very least, two layers are necessary to capture complexity
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(1024, activation='relu')(inputs)
+x = Dense(4096, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  90.59560894966125
+Mean precision:  96.45328044891357
+Mean recall:  13.529437184333801
+
+Conclusion, not necessarily better or worse than others at this point
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(1024, activation='sigmoid')(inputs)
+x = Dense(4096, activation='sigmoid')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  91.88498258590698
+Mean precision:  100.0
+Mean recall:  13.413797914981842
+
+Conclusion, sigmoid is not as effective, or maybe worse than relu
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(1024, activation='softmax')(inputs)
+x = Dense(4096, activation='softmax')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  58.864569664001465
+Mean precision:  100.0
+Mean recall:  13.413797914981842
+
+Conclusion, softmax is the worst activation function of those tested so far
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(1024, activation='relu')(inputs)
+x = Dense(4096, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss=keras.losses.BinaryCrossentropy(reduction='none'), optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(), keras.metrics.Recall()])
+
+Model outputs:
+
+Mean area under curve:  85.9045946598053
+Mean precision:  99.98990416526794
+Mean recall:  13.413797914981842
+
+Conclusion, reduction affects AUC, but impact on other evaluators is minimal
+
+Model base code:
+
+n_classes = 731
+input_shape = (40,)
+inputs = keras.Input(input_shape)
+x = Dense(128, activation='relu')(inputs)
+x = Dense(1024, activation='relu')(x)
+x = Dense(4096, activation='relu')(x)
+predictions = Dense(n_classes, activation='sigmoid')(x)
+model = keras.Model(inputs = inputs, outputs = predictions)
+model.compile(loss=keras.losses.BinaryCrossentropy(reduction='none'), optimizer='sgd')
+
+Manually set threshold to 0.4
+
+Model outputs:
+
+Mean area under curve:  0.34773898
+Mean precision:  0.67009723
+Mean recall:  0.15775342
+
+Conclusion, threshold lowers AUC and Precision, but does not have significant enough effect on recall
