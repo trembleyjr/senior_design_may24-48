@@ -195,3 +195,84 @@ Mean precision:  0.67009723
 Mean recall:  0.15775342
 
 Conclusion, threshold lowers AUC and Precision, but does not have significant enough effect on recall
+
+
+
+
+=================================================================================================
+Noah Stuff
+=================================================================================================
+
+    n_classes = 731
+
+    # Input layer
+    input_shape = (40,)
+    inputs = keras.Input(input_shape)
+
+    # Hidden layers
+    x = Dense(128, activation='sigmoid')(inputs)
+    x = Dense(512, activation = 'sigmoid')(x)
+#     x = Dense(1024, activation = 'sigmoid')(x)
+
+predictions = Dense(n_classes, activation='sigmoid')(x)
+    
+    model = keras.Model(inputs = inputs, outputs = predictions)
+    model.compile(loss=keras.losses.BinaryFocalCrossentropy(apply_class_balancing=True, alpha = 0.25, gamma = 12), optimizer=keras.optimizers.Adam(learning_rate=0.1))
+    
+Area under the curve:  0.3488372
+Precision:  0.025698263
+Recall:  0.95364505
+Precision/Recall avg:  0.25201082
+
+Baseline
+__________________________________________________________________________________________
+
+    n_classes = 731
+
+    # Input layer
+    input_shape = (40,)
+    inputs = keras.Input(input_shape)
+
+    # Hidden layers
+    x = Dense(128, activation='sigmoid')(inputs)
+    x = Dense(512, activation = 'sigmoid')(x)
+#     x = Dense(1024, activation = 'sigmoid')(x)
+
+predictions = Dense(n_classes, activation='sigmoid')(x)
+    
+     model = keras.Model(inputs = inputs, outputs = predictions)
+    model.compile(loss=keras.losses.BinaryFocalCrossentropy(apply_class_balancing=True, alpha = 0.05, gamma = 12), optimizer=keras.optimizers.Adam(learning_rate=0.1))
+   
+    
+Area under the curve:  0.3488372
+Precision:  0.048142716
+Recall:  0.7883679
+Precision/Recall avg:  0.24441543
+
+Lowered alpha value, resulted in less predictions from the machine. 
+__________________________________________________________________________________________
+
+    n_classes = 731
+
+    # Input layer
+    input_shape = (40,)
+    inputs = keras.Input(input_shape)
+
+    # Hidden layers
+    x = Dense(128, activation='sigmoid')(inputs)
+    x = Dense(512, activation = 'sigmoid')(x)
+    x = Dense(1024, activation = 'sigmoid')(x)
+
+predictions = Dense(n_classes, activation='sigmoid')(x)
+    
+     model = keras.Model(inputs = inputs, outputs = predictions)
+    model.compile(loss=keras.losses.BinaryFocalCrossentropy(apply_class_balancing=True, alpha = 0.05, gamma = 12), optimizer=keras.optimizers.Adam(learning_rate=0.1))
+   
+    
+Area under the curve:  0.3488372
+Precision:  0.049804077
+Recall:  0.762956
+Precision/Recall avg:  0.24227878
+
+Added level of 1024 layers. Nearly no change
+__________________________________________________________________________________________
