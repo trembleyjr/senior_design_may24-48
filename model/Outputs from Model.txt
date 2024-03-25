@@ -21,7 +21,6 @@ Mean recall:  18.77666436135769
 
 Conclusion, attempt to focus towards raising precision and recall
 
-<<<<<<< Updated upstream
 Model base code:
 
 n_classes = 731
@@ -205,23 +204,12 @@ Noah Stuff
 =================================================================================================
 
     n_classes = 731
-=======
-
-
-=================================================
-                Noah's Section: 
-=================================================
-cv = KFold(n_splits=10, shuffle=True, random_state=1023)
-
-n_classes = 731
->>>>>>> Stashed changes
 
     # Input layer
     input_shape = (40,)
     inputs = keras.Input(input_shape)
 
     # Hidden layers
-<<<<<<< Updated upstream
     x = Dense(128, activation='sigmoid')(inputs)
     x = Dense(512, activation = 'sigmoid')(x)
 #     x = Dense(1024, activation = 'sigmoid')(x)
@@ -240,39 +228,12 @@ Baseline
 __________________________________________________________________________________________
 
     n_classes = 731
-=======
-    x = Dense(128, activation='relu')(inputs)
-#     x = Dense(256, activation='relu')(x)
-#     x = Dense(512, activation='relu')(x)
-#     x = Dense(1024, activation='relu')(x)
-#     x = Dense(2048, activation='relu')(x)
-
-
-    # Output layer - use multilabel classification
-    predictions = Dense(n_classes, activation='sigmoid')(x)
-    
-    #Tie model together
-    model = keras.Model(inputs = inputs, outputs = predictions)
-    model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(),keras.metrics.Recall()])
-    
-
-
-Mean area under curve:  83.67926836013794
-Mean precision:  47.664906084537506
-Mean recall:  15.74330985546112
-____________________________________________________
-
-cv = KFold(n_splits=10, shuffle=True, random_state=1023)
-
-n_classes = 731
->>>>>>> Stashed changes
 
     # Input layer
     input_shape = (40,)
     inputs = keras.Input(input_shape)
 
     # Hidden layers
-<<<<<<< Updated upstream
     x = Dense(128, activation='sigmoid')(inputs)
     x = Dense(512, activation = 'sigmoid')(x)
 #     x = Dense(1024, activation = 'sigmoid')(x)
@@ -292,39 +253,12 @@ Lowered alpha value, resulted in less predictions from the machine.
 __________________________________________________________________________________________
 
     n_classes = 731
-=======
-    x = Dense(128, activation='relu')(inputs)
-    x = Dense(256, activation='relu')(x)
-#     x = Dense(512, activation='relu')(x)
-#     x = Dense(1024, activation='relu')(x)
-#     x = Dense(2048, activation='relu')(x)
-
-
-    # Output layer - use multilabel classification
-    predictions = Dense(n_classes, activation='sigmoid')(x)
-    
-    #Tie model together
-    model = keras.Model(inputs = inputs, outputs = predictions)
-    model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(),keras.metrics.Recall()])
-    
-
-
-Mean area under curve:  84.9429315328598
-Mean precision:  68.64696890115738
-Mean recall:  13.59891653060913
-____________________________________________________
-
-cv = KFold(n_splits=10, shuffle=True, random_state=1023)
-
-n_classes = 731
->>>>>>> Stashed changes
 
     # Input layer
     input_shape = (40,)
     inputs = keras.Input(input_shape)
 
     # Hidden layers
-<<<<<<< Updated upstream
     x = Dense(128, activation='sigmoid')(inputs)
     x = Dense(512, activation = 'sigmoid')(x)
     x = Dense(1024, activation = 'sigmoid')(x)
@@ -342,86 +276,3 @@ Precision/Recall avg:  0.24227878
 
 Added level of 1024 layers. Nearly no change
 __________________________________________________________________________________________
-=======
-    x = Dense(128, activation='relu')(inputs)
-    x = Dense(256, activation='relu')(x)
-    x = Dense(512, activation='relu')(x)
-#     x = Dense(1024, activation='relu')(x)
-#     x = Dense(2048, activation='relu')(x)
-
-
-    # Output layer - use multilabel classification
-    predictions = Dense(n_classes, activation='sigmoid')(x)
-    
-    #Tie model together
-    model = keras.Model(inputs = inputs, outputs = predictions)
-    model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(),keras.metrics.Recall()])
-    
-
-
-Mean area under curve:  90.96400380134583
-Mean precision:  89.7228729724884
-Mean recall:  13.511694520711899
-____________________________________________________
-
-cv = KFold(n_splits=10, shuffle=True, random_state=1023)
-
-n_classes = 731
-
-    # Input layer
-    input_shape = (40,)
-    inputs = keras.Input(input_shape)
-
-    # Hidden layers
-    x = Dense(128, activation='relu')(inputs)
-    x = Dense(256, activation='relu')(x)
-    x = Dense(512, activation='relu')(x)
-    x = Dense(1024, activation='relu')(x)
-#     x = Dense(2048, activation='relu')(x)
-
-
-    # Output layer - use multilabel classification
-    predictions = Dense(n_classes, activation='sigmoid')(x)
-    
-    #Tie model together
-    model = keras.Model(inputs = inputs, outputs = predictions)
-    model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(),keras.metrics.Recall()])
-    
-
-
-Mean area under curve:  91.08613550662994
-Mean precision:  95.40671169757843
-Mean recall:  13.478828221559525
-____________________________________________________
-
-cv = KFold(n_splits=10, shuffle=True, random_state=1023)
-
-n_classes = 731
-
-    # Input layer
-    input_shape = (40,)
-    inputs = keras.Input(input_shape)
-
-    # Hidden layers
-    x = Dense(128, activation='relu')(inputs)
-#   x = Dense(256, activation='relu')(x)
-#   x = Dense(512, activation='relu')(x)
-#   x = Dense(1024, activation='relu')(x)
-    x = Dense(2048, activation='relu')(x)
-
-
-    # Output layer - use multilabel classification
-    predictions = Dense(n_classes, activation='sigmoid')(x)
-    
-    #Tie model together
-    model = keras.Model(inputs = inputs, outputs = predictions)
-    model.compile(loss='binary_crossentropy', optimizer='sgd', metrics = [keras.metrics.AUC(), keras.metrics.Precision(),keras.metrics.Recall()])
-    
-
-
-Mean area under curve:  91.09784305095673
-Mean precision:  95.6020587682724
-Mean recall:  13.812834173440933
-____________________________________________________
-
->>>>>>> Stashed changes
