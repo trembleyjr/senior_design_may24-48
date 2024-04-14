@@ -1,0 +1,27 @@
+{
+    "Records": [
+      {
+        "cf": {
+          "config": {
+            "distributionId": "EXAMPLE"
+          },
+          "request": {
+            "uri": "/test",
+            "method": "POST",
+            "clientIp": "2001:cdba::3257:9652",
+            "headers": {
+              "host": [
+                {
+                  "key": "Host",
+                  "value": "d123.cf.net"
+                }
+              ]
+            },
+            "body":{
+              "data":"Fill this in with correct format once we can test together"
+            }
+          }
+        }
+      }
+    ]
+  }
