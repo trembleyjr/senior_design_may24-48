@@ -8,8 +8,64 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [viewResult, setViewResult] = useState(false);
   const [prediciton, setPrediction] = useState("");
+  const [showSubmitError, setShowSubmitError] = useState(false);
+
+  // Form Data State
+  const [formData, setFormData] = useState({
+    gender: '',
+    birth_year: '',
+    skin_tone: '',
+    skinConditions: []
+  });
+
+  // Callback function to pass into InputFields for Text Box changes
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Callback function to pass into InputFields for Checkboxes
+  const handleCheckboxChange = (event) => {
+    const { value, checked } = event.target;
+    let updatedSkinConditions = [...formData.skinConditions];
+    if (checked) {
+      updatedSkinConditions.push(value);
+    } else {
+      updatedSkinConditions = updatedSkinConditions.filter(condition => condition !== value);
+    }
+    setFormData({
+      ...formData,
+      skinConditions: updatedSkinConditions,
+    });
+  };
+
+  const validateFields = () => {
+    // Check if all text fields are filled out
+    const isTextFieldsFilled = Object.entries(formData).filter(([key]) => key !== 'skinConditions').every(([key, value]) => typeof value === 'string' && value.trim() !== '');
+
+    // Check if at least one skin condition is selected
+    const isSkinConditionSelected = formData.skinConditions.length > 0;
+    
+    return (isTextFieldsFilled && isSkinConditionSelected) 
+  };
+
 
   const getPrediction = async () => {
+    const payload = {
+      ...formData
+    };
+
+    if(!validateFields()){
+      setShowSubmitError(true)
+      return;
+    }
+
+    console.log('payload ', payload)
+    console.log('JSON Payload ', JSON.stringify(payload))
+    
     setIsLoading(true);
 
     const res = await fetch(awsTestUrl, {
@@ -40,8 +96,9 @@ function App() {
 
         {!isLoading && !viewResult && (
           <>
-            <div className="w-full">
-              <InputFields />
+         
+            <div className="w-full flex flex-col items-center">
+              <InputFields handleInputChange={handleInputChange} showSubmitError={showSubmitError} handleCheckboxChange={handleCheckboxChange}/>
             </div>
             <div className="mt-6">
               <Button onClick={getPrediction} colorScheme="red">
