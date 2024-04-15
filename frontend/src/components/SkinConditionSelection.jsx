@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import * as sc from "../skin_conditions";
 
-function SkinConditionSelection() {
+function SkinConditionSelection({handleCheckboxChange}) {
   const maxRowsPerColumnCommon = 5;
   const maxRowsPerColumnOther = 9;
 
@@ -35,7 +35,7 @@ function SkinConditionSelection() {
 
       const displayValue = sc.mainSkinConditionToDisplay[condition];
       stackGroup[index].push(
-        <Checkbox value={condition}>{displayValue}</Checkbox>,
+        <Checkbox key={i + ':' + displayValue} value={condition} onChange={handleCheckboxChange}>{displayValue}</Checkbox>,
       );
 
       // Each Stack (column) should contain 5 Values to check
@@ -83,7 +83,7 @@ function SkinConditionSelection() {
       }
 
       stackGroup[index].push(
-        <Checkbox value={condition}>{formattedString}</Checkbox>,
+        <Checkbox key={i + '-' + formattedString} value={condition} onChange={handleCheckboxChange}>{formattedString}</Checkbox>,
       );
 
       // Each Stack (column) should contain max row Values to check
@@ -109,7 +109,7 @@ function SkinConditionSelection() {
     // Some logic to divide the other conditions
     // among the different tabs evenely
     for (let i = 0; i < totalColumns; i += maxColumnsPerTab) {
-      otherTabs.push(<Tab>{`Page ${index}`}</Tab>);
+      otherTabs.push(<Tab key={i + index}>{`Page ${index}`}</Tab>);
 
       const valuesToUse = [];
       for (let j = 0; j < maxColumnsPerTab; j++) {
@@ -119,12 +119,12 @@ function SkinConditionSelection() {
 
       panels.push(
         <TabPanel>
-          <div className="flex justify-center">
+          <div key={i} className="flex justify-center">
             <CheckboxGroup colorScheme="green">
               <Stack direction={["row"]}>
-                {valuesToUse.map((checkboxes) => {
+                {valuesToUse.map((checkboxes, i) => {
                   return (
-                    <Stack spacing={[1, 5]} direction={["column"]}>
+                    <Stack key={i} spacing={[1, 5]} direction={["column"]}>
                       {checkboxes.map((checkbox) => checkbox)}
                     </Stack>
                   );
@@ -155,9 +155,9 @@ function SkinConditionSelection() {
             <div className="flex justify-center">
               <CheckboxGroup colorScheme="green">
                 <Stack direction={["row"]}>
-                  {Object.values(mainConditions).map((checkboxes) => {
+                  {Object.values(mainConditions).map((checkboxes, i) => {
                     return (
-                      <Stack spacing={[1, 5]} direction={["column"]}>
+                      <Stack key={i} spacing={[1, 5]} direction={["column"]}>
                         {checkboxes.map((checkbox) => checkbox)}
                       </Stack>
                     );
