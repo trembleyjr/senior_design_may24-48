@@ -9,7 +9,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the earlier created app.py and model files to the container
 COPY app.py ./
-COPY test_model.h5 ./
+COPY model.h5 ./
+COPY vocab.npy ./
 
 # Set the CMD to your handler
 CMD ["app.lambda_handler"]

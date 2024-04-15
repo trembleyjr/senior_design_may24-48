@@ -19,6 +19,11 @@ To import the model into our project, we need to save the different parts of the
 #IMPORTANT NOTE: you may get a warning about .h5 being outdated and to use .keras instead. Do not do this. To the extend of current testing, this breaks the container as it won't import correctly.
 model.save("model.h5")
 ```
+```
+#Saving the textvectorization vocabulary
+vocab = vectorizer.get_vocabulary()
+np.save("vocab.npy", vocab)
+```
 #TODO: add other files here
 
 Copy all of these from the model directory to this one.
@@ -40,3 +45,6 @@ This is the file that allows us to actually make the container. This should not 
 - Build and tag the image (steps 2 and 3).
 - Optional: if you want to locally test the model, which is ideal before pushing, follow [this guide](https://docs.aws.amazon.com/lambda/latest/dg/images-test.html)
 - Upload the image.
+
+## Troubleshooting
+- If the lambda function does not work, you may have to use a [lambda invoke command](https://docs.aws.amazon.com/lambda/latest/dg/invocation-sync.html). No idea why this works or if it even does, but there were some issues and reaching with this was the only thing done differently.
