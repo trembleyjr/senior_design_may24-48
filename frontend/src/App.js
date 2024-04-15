@@ -63,7 +63,6 @@ function App() {
       return;
     }
 
-    console.log('payload ', payload)
     console.log('JSON Payload ', JSON.stringify(payload))
     
     setIsLoading(true);
