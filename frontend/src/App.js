@@ -9,16 +9,18 @@ function App() {
   const [viewResult, setViewResult] = useState(false);
   const [prediciton, setPrediction] = useState("");
   const [showSubmitError, setShowSubmitError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   // Form Data State
   const [formData, setFormData] = useState({
     gender: '',
     birth_year: '',
     skin_tone: '',
+    fitzpatrick: '',
     skinConditions: []
   });
 
-  // Callback function to pass into InputFields for Text Box changes
+  // Callback function to pass into InputFields for Text Box / Dropdown changes
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({
@@ -45,11 +47,23 @@ function App() {
   const validateFields = () => {
     // Check if all text fields are filled out
     const isTextFieldsFilled = Object.entries(formData).filter(([key]) => key !== 'skinConditions').every(([key, value]) => typeof value === 'string' && value.trim() !== '');
+    if(!isTextFieldsFilled){
+      setErrorMsg('Please fill out all fields')
+    }
 
     // Check if at least one skin condition is selected
     const isSkinConditionSelected = formData.skinConditions.length > 0;
+    if(!isSkinConditionSelected){
+      setErrorMsg('Select at least one skin condition')
+    }
+
+    // Birth Year should be 4 digits
+    const isBirthYearValid = formData.birth_year.length == 4
+    if(!isBirthYearValid){
+      setErrorMsg('Birth Year should be in the format YYYY')
+    }
     
-    return (isTextFieldsFilled && isSkinConditionSelected) 
+    return isTextFieldsFilled && isSkinConditionSelected && isBirthYearValid
   };
 
 
@@ -62,6 +76,7 @@ function App() {
       setShowSubmitError(true)
       return;
     }
+    setErrorMsg('')
 
     console.log('JSON Payload ', JSON.stringify(payload))
     
@@ -97,7 +112,12 @@ function App() {
           <>
          
             <div className="w-full flex flex-col items-center">
-              <InputFields handleInputChange={handleInputChange} showSubmitError={showSubmitError} handleCheckboxChange={handleCheckboxChange}/>
+              <InputFields 
+                handleInputChange={handleInputChange} 
+                showSubmitError={showSubmitError} 
+                handleCheckboxChange={handleCheckboxChange}
+                errorMsg={errorMsg}
+              />
             </div>
             <div className="mt-6">
               <Button onClick={getPrediction} colorScheme="red">
