@@ -7,7 +7,7 @@ import { useState } from "react";
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [viewResult, setViewResult] = useState(false);
-  const [prediciton, setPrediction] = useState("");
+  const [prediction, setPrediction] = useState("");
   const [showSubmitError, setShowSubmitError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -72,18 +72,22 @@ function App() {
       ...formData
     };
 
-    if(!validateFields()){
+    if (!validateFields()) {
       setShowSubmitError(true)
       return;
     }
     setErrorMsg('')
 
     console.log('JSON Payload ', JSON.stringify(payload))
-    
+
     setIsLoading(true);
 
     const res = await fetch(awsTestUrl, {
-      method: "GET",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     })
       .then((response) => response.json())
       .catch((error) => console.error(error));
@@ -110,7 +114,7 @@ function App() {
 
         {!isLoading && !viewResult && (
           <>
-         
+
             <div className="w-full flex flex-col items-center">
               <InputFields 
                 handleInputChange={handleInputChange} 
@@ -130,7 +134,7 @@ function App() {
         {!isLoading && viewResult && (
           <div className="flex flex-col items-center">
             <h1 className="text-3xl font-semibold text-black">Prediction:</h1>
-            <p>{prediciton}</p>
+            <p>{prediction}</p>
           </div>
         )}
       </main>
@@ -141,4 +145,4 @@ function App() {
 export default App;
 
 const awsTestUrl =
-  "https://lryw2w5i7nr5ysubsumkcn4ssu0fprbu.lambda-url.us-east-1.on.aws/";
+  "https://3ypio7b3q77wg4km5gbym2rnai0icrpj.lambda-url.us-east-2.on.aws/";
