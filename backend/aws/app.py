@@ -2,6 +2,7 @@ import os
 import tensorflow as tf
 import numpy as np
 import json
+import joblib
 
 def lambda_handler(event, context):
     # Assign values and ensure they are the same
@@ -10,7 +11,7 @@ def lambda_handler(event, context):
     year = event['birth_year']
     tone = event['skin_tone'].lower()
     #TODO: add photo type when ready
-    photoType = 'darker-white'
+    photoType = event['fitzpatrick'].lower()
     conditions = event['skinConditions']
     print(gender)
     print(year)
@@ -39,22 +40,22 @@ def lambda_handler(event, context):
     match tone:
         case 'dark':
             print("dark skin")
-            encodedTone = [1, 0, 0, 0, 0]
+            encodedTone = [0, 1, 0, 0, 0, 0]
         case 'medium':
             print("medium skin")
-            encodedTone = [0, 0, 0, 1, 0]
+            encodedTone = [0, 0, 0, 0, 1, 0]
         case 'fair':
             print("fair skin")
-            encodedTone = [0, 1, 0, 0, 0]
+            encodedTone = [0, 0, 1, 0, 0, 0]
         case 'olive':
             print("olive skin")
-            encodedTone = [0, 0, 0, 0, 1]
+            encodedTone = [0, 0, 0, 0, 0, 1]
         case 'light':
             print("light skin")
-            encodedTone = [0, 0, 1, 0, 0]
+            encodedTone = [0, 0, 0, 1, 0, 0]
         case 'brown':
             print("brown skin")
-            encodedTone = [0, 0, 0, 0, 0]
+            encodedTone = [1, 0, 0, 0, 0, 0]
         case _:
             print("Does not match any")
             return "ERROR: Skin Tone does not match one of: dark, medium, fair, olive, light, brown"
@@ -84,15 +85,13 @@ def lambda_handler(event, context):
             encodedPhotoType = [0, 0, 0, 0, 0, 0]
     vocab = np.load("vocab.npy")
     # TextVectorize SkinConditions
-    max_len = 24 # variable from notebook
+    max_len = 23 # variable from notebook
     conditionsStr = ''
     for i in conditions:
         conditionsStr = conditionsStr + i + " "
     vectorizer = tf.keras.layers.TextVectorization(split = "whitespace", output_sequence_length = max_len, vocabulary = vocab)
     encodedConditions = vectorizer(conditionsStr).numpy()
     print(encodedConditions)
-    # Remove when year is fixed
-    year = "2000"
     # Create input array for model
     encodedYear = int(year)
     input_data = [encodedYear]
@@ -109,6 +108,11 @@ def lambda_handler(event, context):
     model.build((77,))
     print(model.summary())
     probs = model.predict(expanded_input)
-    results = (probs > 0.1).astype(int)
+    # Convert input types and send results
+    results = (probs > 0.445).astype(int)
     print(results)
-    return "hello world"
+    mlb = joblib.load('mlb.pkl')    
+    test_results = mlb.inverse_transform(results)
+    print(test_results)
+    print(len(test_results[0]))
+    return test_results

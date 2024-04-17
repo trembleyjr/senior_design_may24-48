@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py ./
 COPY model.h5 ./
 COPY vocab.npy ./
+COPY mlb.pkl ./
 
 # Set the CMD to your handler
 CMD ["app.lambda_handler"]

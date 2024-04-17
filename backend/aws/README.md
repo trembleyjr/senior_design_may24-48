@@ -24,7 +24,10 @@ model.save("model.h5")
 vocab = vectorizer.get_vocabulary()
 np.save("vocab.npy", vocab)
 ```
-#TODO: add other files here
+```
+#Saving the MultiLabelBinarizer
+joblib.dump(mlb, "mlb.pkl")
+```
 
 Copy all of these from the model directory to this one.
 
