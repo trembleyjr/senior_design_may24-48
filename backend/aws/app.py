@@ -109,7 +109,7 @@ def lambda_handler(event, context):
     print(model.summary())
     probs = model.predict(expanded_input)
     # Convert input types and send results
-    results = (probs > 0.445).astype(int)
+    results = (probs > 0.4).astype(int)
     print(results)
     mlb = joblib.load('mlb.pkl')    
     test_results = mlb.inverse_transform(results)
