@@ -5,14 +5,14 @@ import json
 import joblib
 
 def lambda_handler(event, context):
+    body = json.loads(event["body"])
+    print(body)
+    gender = body.get('gender').lower()
+    year = body.get('birth_year')
+    tone = body.get('skin_tone').lower()
+    photoType = body.get('fitzpatrick').lower()
+    conditions = body.get('skinConditions')
     # Assign values and ensure they are the same
-    gender = event['gender'].lower()
-    # TODO: wait for year to be sent like year
-    year = event['birth_year']
-    tone = event['skin_tone'].lower()
-    #TODO: add photo type when ready
-    photoType = event['fitzpatrick'].lower()
-    conditions = event['skinConditions']
     print(gender)
     print(year)
     print(tone)
@@ -115,4 +115,7 @@ def lambda_handler(event, context):
     test_results = mlb.inverse_transform(results)
     print(test_results)
     print(len(test_results[0]))
-    return test_results
+    return {
+        'statusCode':200,
+        'body': json.dumps(test_results)
+    }
