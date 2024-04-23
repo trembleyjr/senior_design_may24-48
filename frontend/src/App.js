@@ -47,22 +47,22 @@ function App() {
   const validateFields = () => {
     // Check if all text fields are filled out
     const isTextFieldsFilled = Object.entries(formData).filter(([key]) => key !== 'skinConditions').every(([key, value]) => typeof value === 'string' && value.trim() !== '');
-    if(!isTextFieldsFilled){
+    if (!isTextFieldsFilled) {
       setErrorMsg('Please fill out all fields')
     }
 
     // Check if at least one skin condition is selected
     const isSkinConditionSelected = formData.skinConditions.length > 0;
-    if(!isSkinConditionSelected){
+    if (!isSkinConditionSelected) {
       setErrorMsg('Select at least one skin condition')
     }
 
     // Birth Year should be 4 digits
     const isBirthYearValid = formData.birth_year.length == 4
-    if(!isBirthYearValid){
+    if (!isBirthYearValid) {
       setErrorMsg('Birth Year should be in the format YYYY')
     }
-    
+
     return isTextFieldsFilled && isSkinConditionSelected && isBirthYearValid
   };
 
@@ -97,7 +97,8 @@ function App() {
     console.log(res);
     if (res) {
       setViewResult(true);
-      setPrediction(res.body);
+      const formattedPrediction = res.join(", ").replace(/,/g, ",\n");
+      setPrediction(formattedPrediction);
     }
   };
 
@@ -116,9 +117,9 @@ function App() {
           <>
 
             <div className="w-full flex flex-col items-center">
-              <InputFields 
-                handleInputChange={handleInputChange} 
-                showSubmitError={showSubmitError} 
+              <InputFields
+                handleInputChange={handleInputChange}
+                showSubmitError={showSubmitError}
                 handleCheckboxChange={handleCheckboxChange}
                 errorMsg={errorMsg}
               />
@@ -134,7 +135,9 @@ function App() {
         {!isLoading && viewResult && (
           <div className="flex flex-col items-center">
             <h1 className="text-3xl font-semibold text-black">Prediction:</h1>
-            <p>{prediction}</p>
+            <div className="predictionBox">
+              <p>{prediction}</p>
+            </div>
           </div>
         )}
       </main>
@@ -145,4 +148,4 @@ function App() {
 export default App;
 
 const awsTestUrl =
-  "https://3ypio7b3q77wg4km5gbym2rnai0icrpj.lambda-url.us-east-2.on.aws/";
+  "https://qr2tj6xdwhkyzgum3c3vo7ijiy0kvpyb.lambda-url.us-east-2.on.aws/";
