@@ -120,7 +120,8 @@ def lambda_handler(event, context):
     print(type(test_results[0][0]))
     new_results = []
     for result in test_results[0]:
-        new_results.append(int(result))
+        if(result != 0):
+            new_results.append(int(result))
     return {
         'statusCode':200,
         'body': json.dumps(new_results)
