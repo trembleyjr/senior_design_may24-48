@@ -98,24 +98,30 @@ def lambda_handler(event, context):
     input_data = np.concatenate((input_data, encodedGender))
     input_data = np.concatenate((input_data, encodedTone))
     input_data = np.concatenate((input_data, encodedPhotoType))
-    input_data = np.concatenate((input_data, encodedConditions))
     print(input_data)
     expanded_input = np.expand_dims(input_data, axis = 0)
+    expanded_conditions = np.expand_dims(encodedConditions, axis = 0)
     print(expanded_input)
     # Load model and predict result
     model = tf.keras.models.load_model("model.h5")
     print("Model loaded")
     model.build((77,))
     print(model.summary())
-    probs = model.predict(expanded_input)
+    probs = model.predict([expanded_input, expanded_conditions])
     # Convert input types and send results
-    results = (probs > 0.4).astype(int)
+    results = (probs > 0.2).astype(int)
     print(results)
     mlb = joblib.load('mlb.pkl')    
     test_results = mlb.inverse_transform(results)
     print(test_results)
     print(len(test_results[0]))
+    print(type(test_results))
+    print(type(test_results[0]))
+    print(type(test_results[0][0]))
+    new_results = []
+    for result in test_results[0]:
+        new_results.append(int(result))
     return {
         'statusCode':200,
-        'body': json.dumps(test_results)
+        'body': json.dumps(new_results)
     }
