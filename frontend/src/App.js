@@ -9,15 +9,15 @@ function App() {
   const [viewResult, setViewResult] = useState(false);
   const [prediction, setPrediction] = useState("");
   const [showSubmitError, setShowSubmitError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Form Data State
   const [formData, setFormData] = useState({
-    gender: '',
-    birth_year: '',
-    skin_tone: '',
-    fitzpatrick: '',
-    skinConditions: []
+    gender: "",
+    birth_year: "",
+    skin_tone: "",
+    fitzpatrick: "",
+    skinConditions: [],
   });
 
   // Callback function to pass into InputFields for Text Box / Dropdown changes
@@ -36,7 +36,9 @@ function App() {
     if (checked) {
       updatedSkinConditions.push(value);
     } else {
-      updatedSkinConditions = updatedSkinConditions.filter(condition => condition !== value);
+      updatedSkinConditions = updatedSkinConditions.filter(
+        (condition) => condition !== value
+      );
     }
     setFormData({
       ...formData,
@@ -46,48 +48,51 @@ function App() {
 
   const validateFields = () => {
     // Check if all text fields are filled out
-    const isTextFieldsFilled = Object.entries(formData).filter(([key]) => key !== 'skinConditions').every(([key, value]) => typeof value === 'string' && value.trim() !== '');
+    const isTextFieldsFilled = Object.entries(formData)
+      .filter(([key]) => key !== "skinConditions")
+      .every(
+        ([key, value]) => typeof value === "string" && value.trim() !== ""
+      );
     if (!isTextFieldsFilled) {
-      setErrorMsg('Please fill out all fields')
+      setErrorMsg("Please fill out all fields");
     }
 
     // Check if at least one skin condition is selected
     const isSkinConditionSelected = formData.skinConditions.length > 0;
     if (!isSkinConditionSelected) {
-      setErrorMsg('Select at least one skin condition')
+      setErrorMsg("Select at least one skin condition");
     }
 
     // Birth Year should be 4 digits
-    const isBirthYearValid = formData.birth_year.length == 4
+    const isBirthYearValid = formData.birth_year.length == 4;
     if (!isBirthYearValid) {
-      setErrorMsg('Birth Year should be in the format YYYY')
+      setErrorMsg("Birth Year should be in the format YYYY");
     }
 
-    return isTextFieldsFilled && isSkinConditionSelected && isBirthYearValid
+    return isTextFieldsFilled && isSkinConditionSelected && isBirthYearValid;
   };
-
 
   const getPrediction = async () => {
     const payload = {
-      ...formData
+      ...formData,
     };
 
     if (!validateFields()) {
-      setShowSubmitError(true)
+      setShowSubmitError(true);
       return;
     }
-    setErrorMsg('')
+    setErrorMsg("");
 
-    console.log('JSON Payload ', JSON.stringify(payload))
+    console.log("JSON Payload ", JSON.stringify(payload));
 
     setIsLoading(true);
 
     const res = await fetch(awsTestUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     })
       .then((response) => response.json())
       .catch((error) => console.error(error));
@@ -115,7 +120,6 @@ function App() {
 
         {!isLoading && !viewResult && (
           <>
-
             <div className="w-full flex flex-col items-center">
               <InputFields
                 handleInputChange={handleInputChange}
@@ -133,10 +137,17 @@ function App() {
         )}
 
         {!isLoading && viewResult && (
-          <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-semibold text-black">Prediction:</h1>
+          <div className="flex flex-col items-center justify-center mt-8">
+            <h1 className="text-3xl font-semibold text-black">
+              Potential Allergens:
+            </h1>
+            <p className="text-xl font-thin text-gray-600">Ingredient Ids:</p>
             <div className="predictionBox">
-              <p>{prediction}</p>
+              <p>
+                {prediction != ""
+                  ? prediction
+                  : "No potential allergens identified"}
+              </p>
             </div>
           </div>
         )}
